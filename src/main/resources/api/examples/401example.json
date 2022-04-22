@@ -1,0 +1,10 @@
+{
+  "msg": "failed operation",
+  "code": 401,
+  "eventId": "dbfhjsdb-hfb-do8ryt-876t7-5ty",
+  "error": {
+    "type": "un-authorised",
+    "title": "Invalid Request",
+    "details": "The input contains invalid data"
+  }
+}

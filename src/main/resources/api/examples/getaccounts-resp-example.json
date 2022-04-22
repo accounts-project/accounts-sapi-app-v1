@@ -1,0 +1,8 @@
+{
+  "accountStatusResponse": [
+    {
+      "AccountNumber": "account001",
+      "status": "true"
+    }
+  ]
+}

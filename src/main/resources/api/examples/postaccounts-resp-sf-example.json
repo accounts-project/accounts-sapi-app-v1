@@ -1,0 +1,12 @@
+{
+  "accountResponse": [
+    {
+      "AccountNumber": "customer001",
+      "status": "true"
+    },
+    {
+      "AccountNumber": "customer002",
+      "status": "true"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "msg": "failed operation",
+  "code": 500,
+  "eventId": "dbfhjsdb-hfb-do8ryt-876t7-5ty",
+  "error": {
+    "type": "internal server error",
+    "title": "Invalid Request",
+    "details": "sever error"
+  }
+}

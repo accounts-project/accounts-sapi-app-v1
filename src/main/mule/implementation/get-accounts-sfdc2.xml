@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="get-accounts-sfdc-fetch--flow" doc:id="3f6e8768-2240-4015-a31d-7e7e2b906da0" >
+		<logger level="INFO" doc:name="salesforce request Logger" doc:id="1964f586-21f8-4650-8301-62b512225cf2" message='#[%dw 2.0
+output application/json
+---
+{
+	"flowname": flow.name,
+	"appname": app.name,
+	"transactionid": vars.requestHeader.transactionId,
+	"status": "sfdc query request",
+	"datetime": now()
+}]'/>
+		<salesforce:query-all doc:name="fetch accounts Query all" doc:id="31d930dd-8d90-467a-9969-2bec1f57ee8c" config-ref="Salesforce_Config">
+			<salesforce:salesforce-query ><![CDATA[Select Name,accountName__c,AccountNumber,Type,Industry,AnnualRevenue,status__c,BillingCity,Rating,phoneNumber__c,Ownership from Account where status__c = ':status__c'and AccountNumber = ':AccountNumber']]></salesforce:salesforce-query>
+			<salesforce:parameters ><![CDATA[#[{
+  "status__c": vars.requestqueryParam.'status__c',
+  "AccountNumber": vars.requestqueryParam.'AccountNumber'
+}]]]></salesforce:parameters>
+		</salesforce:query-all>
+		<logger level="INFO" doc:name="salesforce responce Logger" doc:id="04713095-ff2d-4f41-996c-4897c58a1720" message='#[%dw 2.0
+output application/json
+---
+{
+	"flowname": flow.name,
+	"appname": app.name,
+	"transactionid": vars.requestHeader.transactionId,
+	"status": "sfdc query responce",
+	"datetime": now()
+}]'/>
+		<ee:transform doc:name="Transform Message" doc:id="c1db60f9-6288-46bb-83be-da46f5632aed" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  accountStatusResponse: [
+    {
+      AccountNumber: payload.AccountNumber,
+      status: "true"
+    }
+  ]
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

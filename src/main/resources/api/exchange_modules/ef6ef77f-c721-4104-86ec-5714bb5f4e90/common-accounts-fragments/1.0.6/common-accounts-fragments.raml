@@ -1,0 +1,10 @@
+#%RAML 1.0 Library
+types:
+  postaccountreq: !include datatype/postaccounts-sf-req-dataType.raml
+  postaccountresp: !include datatype/postaccounts-resp-sf-dataType.raml
+  commonerrordt: !include datatype/commonerror-dataType.raml
+traits:
+  client: !include traits/clientid-secretstrait.raml
+  transactionid: !include traits/transactionid-trait.raml
+  status: !include traits/querystatus-trait.raml
+  accountnumber: !include traits/queryAccountNumber-trait.raml

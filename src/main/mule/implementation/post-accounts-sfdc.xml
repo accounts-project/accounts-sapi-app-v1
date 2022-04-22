@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+	<flow name="post-accounts-sfdcFlow" doc:id="e50c7c8d-d06a-4d98-a921-545555282c0f" >
+		<logger level="DEBUG" doc:name="Logger" doc:id="6205a68a-36d5-42e3-86e1-fce905207006" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "sfdc request",&#10;	"datetime": now()&#10;}]'/>
+		<ee:transform doc:name="Transform Message" doc:id="edac840b-29a0-4586-81b2-c0ab3e18b807" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+vars.requestPayload.accountRequest map((emp,index)->{
+	"Name":emp.Name,
+	"accountName__c": emp.Name,
+	"AccountNumber": emp.AccountNumber,
+	"Type": emp.Type,
+	"Industry": emp.Industry,
+	"AnnualRevenue": emp.AnnualRevenue,
+	"status__c": emp.status,
+	"BillingCity": emp.BillingCity,
+	"Rating": emp.Rating,
+	"phoneNumber__c": emp.phone,
+	"Ownership": emp.Ownership
+})]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<salesforce:upsert doc:name="Upsert" doc:id="4eeca8f2-9c94-405b-9872-80f67ef97a11" config-ref="Salesforce_Config" objectType="Account" externalIdFieldName="accountName__c"/>
+		<logger level="INFO" doc:name="Logger" doc:id="4b46fe26-352e-4b08-9282-df6eae7e9a8a" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "sfdc responce",&#10;	"datetime": now()&#10;}]'/>
+		<ee:transform doc:name="Transform Message" doc:id="14c0dbc2-ccbe-4b9a-9758-a1f6115fdde6" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  accountResponse: [
+    {
+      AccountNumber: vars.requestPayload.accountRequest.AccountNumber[1],
+      status: "true"
+    }
+  ]
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

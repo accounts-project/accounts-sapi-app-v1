@@ -1,0 +1,86 @@
+#%RAML 1.0
+title: accounts-sapi-app-v1
+
+types:
+  postreqdatatype: !include exchange_modules/ef6ef77f-c721-4104-86ec-5714bb5f4e90/common-accounts-fragments/1.0.6/datatype/postaccounts-sf-req-dataType.raml
+  postrespdatatype: !include exchange_modules/ef6ef77f-c721-4104-86ec-5714bb5f4e90/common-accounts-fragments/1.0.6/datatype/postaccounts-resp-sf-dataType.raml
+  getrespdt: !include exchange_modules/ef6ef77f-c721-4104-86ec-5714bb5f4e90/common-accounts-fragments/1.0.6/datatype/get-resp-dataType.raml
+traits:
+    transactionid: !include exchange_modules/ef6ef77f-c721-4104-86ec-5714bb5f4e90/common-accounts-fragments/1.0.6/traits/transactionid-trait.raml
+    clientidsecret: !include exchange_modules/ef6ef77f-c721-4104-86ec-5714bb5f4e90/common-accounts-fragments/1.0.6/traits/clientid-secretstrait.raml 
+    commonerrortrait: !include common/commonresperror.raml
+uses:
+  commonquery: common/query-trait.raml
+/accounts:
+  post:
+    is:
+      - transactionid
+      - clientidsecret 
+      - commonerrortrait
+    body:
+      application/json:
+        type: postreqdatatype                 
+        example: !include examples/postaccounts-req-sf-example.json
+    responses:
+      200:
+        body:
+          application/json:
+            type: postrespdatatype
+            example: !include examples/postaccounts-resp-sf-example.json                                  
+  get:
+    is:
+      - clientidsecret
+      - transactionid
+      - commonerrortrait
+      - commonquery.accountnumber
+      - commonquery.status
+    responses:
+      200:
+        body:
+          application/json:
+            type: getrespdt
+            example: !include examples/getaccounts-resp-example.json
+  patch:
+    is:
+      - transactionid
+      - clientidsecret 
+      - commonerrortrait  
+    body:
+      application/json:
+        type: postreqdatatype                 
+        example: !include examples/postaccounts-req-sf-example.json
+    responses:
+      200:
+        body:
+          application/json:
+            type: postrespdatatype
+            example: !include examples/postaccounts-resp-sf-example.json                  
+  /status:
+    get:
+      is:
+        - clientidsecret
+        - commonerrortrait
+        - transactionid
+        - commonquery.accountnumber
+        - commonquery.status
+      responses:
+        200:
+          body:
+            application/json:
+              type: postreqdatatype                 
+              example: !include examples/postaccounts-req-sf-example.json
+    post:
+      is:
+      - transactionid
+      - clientidsecret 
+      - commonerrortrait    
+      body:
+        application/json:
+          type: postreqdatatype                 
+          example: !include examples/postaccounts-req-sf-example.json
+      responses:
+        200:
+          body:
+            application/json:
+              type: postrespdatatype
+              example: !include examples/postaccounts-resp-sf-example.json        

@@ -1,0 +1,16 @@
+#%RAML 1.0 DataType
+type: object
+properties:
+  accountStatusResponse:
+    type: array
+    items:
+      type: object
+      properties:
+        AccountNumber:
+          type: string
+          required: true
+          example: "accounts100"
+        status:
+          type: string
+          required: true
+          example: "true"

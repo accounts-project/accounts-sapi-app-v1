@@ -1,0 +1,7 @@
+%dw 2.0
+
+type auto_6feaa0c7_d4bd_448f_bcb9_8bd36864236d_Input_Payload = {
+  accountRequest: Array<{    Industry: String,     Type: String,     Ownership: String,     BillingCity: String,     phone: String,     Rating: String,     AnnualRevenue: Number,     Name: String,     AccountNumber: String,     status: String,     _?: Any  }>, 
+  _?: Any
+}
+

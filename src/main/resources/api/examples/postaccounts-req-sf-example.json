@@ -1,0 +1,16 @@
+{
+  "accountRequest":[
+    {
+	"Name": "rajesh",
+	"AccountNumber": "78799865678",
+	"Type": "Customer - Direct",
+	"Industry": "Banking",
+	"AnnualRevenue": 40,
+	"status": "false",
+	"BillingCity": "india",
+	"Rating": "hot",
+	"phone": "9090909",
+	"Ownership": "Private"
+    }
+  ]
+}

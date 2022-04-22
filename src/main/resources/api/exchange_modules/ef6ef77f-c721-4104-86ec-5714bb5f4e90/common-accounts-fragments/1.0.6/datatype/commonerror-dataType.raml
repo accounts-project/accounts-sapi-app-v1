@@ -1,0 +1,30 @@
+#%RAML 1.0 DataType
+type: object
+properties:
+  msg:
+    type: string
+    required: true
+    example: "bad request"
+  code:
+    type: integer
+    required: true
+    example: 400
+  eventId:
+    type: string
+    required: true
+    example: "sldahaffkhifye77r77fg655775"
+  error:
+    type: object
+    properties:
+      type:
+        type: string
+        required: true
+        example: "bad request"
+      title:
+        type: string
+        required: true
+        example: "invalid request"
+      details:
+        type: string
+        required: true
+        example: "The input contains invalid data"

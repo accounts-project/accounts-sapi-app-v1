@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<flow name="post-accounts-status-dbFlow" doc:id="6feaa0c7-d4bd-448f-bcb9-8bd36864236d" >
+		<logger level="INFO" doc:name="Logger" doc:id="1028ec61-91d3-4106-8fa1-8121d379bd72" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "db request",&#10;	"datetime": now()&#10;}]'/>
+		<ee:transform doc:name="Transform Message" doc:id="b7b71f0f-aed1-4b81-9946-73add365a7c5" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+vars.requestPayload.accountRequest map((emp,index)->{
+	  "accountName": emp.Name,
+	  "accountNumber": emp.AccountNumber, 
+	  "Type": emp.Type,
+	  "Industry": emp.Industry,
+	  "AnnualRevenue": emp.AnnualRevenue,
+	  "phoneNumber": emp.phone,
+	  "BillingCity": emp.BillingCity,
+	  "Rating": emp.Rating,
+	  "status": emp.status,
+      "ownership": emp.Ownership
+})]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<db:bulk-insert doc:name="Bulk insert" doc:id="0c275b37-11e7-4836-babb-4263465fe570" config-ref="Database_Config">
+			<db:sql ><![CDATA[insert into customer (accountName,accountNumber,Type,Industry,AnnualRevenue,phoneNumber,BillingCity,Rating,status,ownership)values(:accountName,:accountNumber,:Type,:Industry,:AnnualRevenue,:phoneNumber,:BillingCity,:Rating,:status,:ownership)]]></db:sql>
+		</db:bulk-insert>
+		<logger level="INFO" doc:name="Logger" doc:id="298c547a-6495-4c77-94df-02c058271af3" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "db responce",&#10;	"datetime": now()&#10;}]'/>
+		<ee:transform doc:name="Transform Message" doc:id="9d154b25-47fe-4b2b-8eea-5afb3b288737" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  accountResponse: [
+    {
+      AccountNumber: vars.requestPayload.accountRequest.AccountNumber[1],
+      status: "true"
+    }
+  ]
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

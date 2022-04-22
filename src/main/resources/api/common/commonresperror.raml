@@ -1,0 +1,22 @@
+#%RAML 1.0 Trait
+responses:
+      400:
+       body:
+        application/json:
+          type: !include exchange_modules/ef6ef77f-c721-4104-86ec-5714bb5f4e90/common-accounts-fragments/1.0.6/datatype/commonerror-dataType.raml
+          example: !include ../examples/400example.json
+      401:
+        body:
+          application/json:
+            type: !include exchange_modules/ef6ef77f-c721-4104-86ec-5714bb5f4e90/common-accounts-fragments/1.0.6/datatype/commonerror-dataType.raml
+            example: !include ../examples/401example.json
+      404:
+        body:
+          application/json:
+            type: !include exchange_modules/ef6ef77f-c721-4104-86ec-5714bb5f4e90/common-accounts-fragments/1.0.6/datatype/commonerror-dataType.raml
+            example: !include ../examples/404example.json
+      500:
+        body:
+          application/json:
+            type: !include exchange_modules/ef6ef77f-c721-4104-86ec-5714bb5f4e90/common-accounts-fragments/1.0.6/datatype/commonerror-dataType.raml
+            example: !include ../examples/500example.json  

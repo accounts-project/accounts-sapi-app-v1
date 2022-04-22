@@ -1,0 +1,48 @@
+#%RAML 1.0 DataType
+type: object
+properties:
+ accountRequest:
+  type: array
+  items:
+    type: object
+    properties:
+      Name:
+        type: string
+        required: true
+        example: "account1001"
+      AccountNumber:
+        type: string
+        required: true
+        example: "Name1001"                  
+      Type:
+        type: string
+        required: true
+        example: "cutomer - direct"                  
+      Industry:
+        type: string
+        required: true
+        example: "banking"                  
+      AnnualRevenue:
+        type: integer
+        required: true
+        example: 4000                  
+      phone:
+        type: string
+        required: true
+        example: "77893574"                  
+      BillingCity:
+        type: string
+        required: true
+        example: "hyd"                  
+      status:
+        type: string
+        required: true
+        example: "false"                 
+      Rating:
+        type: string
+        required: true
+        example: "hot"   
+      Ownership:
+        type: string
+        required: true
+        example: "private"   
