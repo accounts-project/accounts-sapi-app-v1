@@ -36,12 +36,11 @@ vars.requestPayload.accountRequest map((emp,index)->{
 output application/json
 ---
 {
-  accountResponse: [
+  accountResponse: vars.requestPayload.accountRequest map((emp,index)->
     {
-      AccountNumber: vars.requestPayload.accountRequest.AccountNumber,
+      AccountNumber: vars.requestPayload.accountRequest.AccountNumber[index],
       status: "true"
-    }
-  ]
+    })
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>

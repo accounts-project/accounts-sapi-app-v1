@@ -17,10 +17,9 @@ output application/json
 	"datetime": now()
 }]'/>
 		<salesforce:query-all doc:name="fetch accounts Query all" doc:id="31d930dd-8d90-467a-9969-2bec1f57ee8c" config-ref="Salesforce_Config">
-			<salesforce:salesforce-query ><![CDATA[Select Name,accountName__c,AccountNumber,Type,Industry,AnnualRevenue,status__c,BillingCity,Rating,phoneNumber__c,Ownership from Account where status__c = ':status__c'and AccountNumber = ':AccountNumber']]></salesforce:salesforce-query>
+			<salesforce:salesforce-query ><![CDATA[Select Name,accountName__c,AccountNumber,Type,Industry,AnnualRevenue,status__c,BillingCity,Rating,phoneNumber__c,Ownership from Account where status__c = ':status__c']]></salesforce:salesforce-query>
 			<salesforce:parameters ><![CDATA[#[{
-  "status__c": vars.requestqueryParam.'status__c',
-  "AccountNumber": vars.requestqueryParam.'AccountNumber'
+  "status__c": "false"
 }]]]></salesforce:parameters>
 		</salesforce:query-all>
 		<logger level="INFO" doc:name="salesforce responce Logger" doc:id="04713095-ff2d-4f41-996c-4897c58a1720" message='#[%dw 2.0
@@ -33,18 +32,26 @@ output application/json
 	"status": "sfdc query responce",
 	"datetime": now()
 }]'/>
-		<ee:transform doc:name="Transform Message" doc:id="c1db60f9-6288-46bb-83be-da46f5632aed" >
+		<ee:transform doc:name="Transform Message" doc:id="1942bd69-6596-4e69-8222-88ee3ba78ed9" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
 ---
 {
-  accountStatusResponse: [
+  "accountRequest": payload map ((emp,index)->
     {
-      AccountNumber: payload.AccountNumber,
-      status: "true"
+	"Name": emp.accountName__c default "",
+	"AccountNumber": emp.AccountNumber,
+	"Type": emp.Type,
+	"Industry": emp.Industry,
+	"AnnualRevenue": emp.AnnualRevenue as Number,
+	"status": emp.status__c,
+	"BillingCity": emp.BillingCity,
+	"Rating": emp.Rating,
+	"phone": emp.phoneNumber__c default "",
+	"Ownership": emp.Ownership
     }
-  ]
+  )
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
