@@ -44,5 +44,10 @@ output application/json
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="2f2ee0e9-62cf-4e8e-a1a2-5d16f59a3750" type="DB:BAD_SQL_SYNTAX, DB:CONNECTIVITY, DB:QUERY_EXECUTION, DB:RETRY_EXHAUSTED">
+				<logger level="INFO" doc:name="Logger" doc:id="0081d2f9-4d37-4231-be6e-5df26414ada0" message="DB Error"/>
+			</on-error-propagate>
+		</error-handler>
 	</flow>
 </mule>
