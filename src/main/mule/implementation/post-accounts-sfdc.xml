@@ -44,5 +44,10 @@ output application/json
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="2a4401c1-7766-4f1a-ada3-441ff5da6c07" type="SALESFORCE:CONNECTIVITY, SALESFORCE:INVALID_INPUT, SALESFORCE:INVALID_RESPONSE, SALESFORCE:LIMIT_EXCEEDED, SALESFORCE:MUTUAL_AUTHENTICATION_FAILED">
+				<logger level="INFO" doc:name="Logger" doc:id="201c6847-7482-477f-a3a2-39130f2fcb42" message="SFDC Error "/>
+			</on-error-propagate>
+		</error-handler>
 	</flow>
 </mule>
