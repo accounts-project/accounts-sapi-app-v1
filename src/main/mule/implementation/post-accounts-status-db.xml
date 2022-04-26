@@ -12,7 +12,7 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
 ---
-vars.requestPayload.accountRequest map((emp,index)->{
+(vars.requestPayload.accountRequest distinctBy $.AccountNumber) map((emp,index)->{
 	  "accountName": emp.Name,
 	  "accountNumber": emp.AccountNumber, 
 	  "Type": emp.Type,
