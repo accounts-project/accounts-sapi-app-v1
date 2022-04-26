@@ -24,8 +24,7 @@ vars.requestPayload.accountRequest map((emp,index)->{
 	"BillingCity": emp.BillingCity,
 	"Rating": emp.Rating,
 	"phoneNumber__c": emp.phone,
-	"Ownership": emp.Ownership,
-	"lastModifiedDate__c": (now() >> "Asia/Kolkata") as String {format: "dd-MM-yyyy'T'hh:mm:ss"}
+	"Ownership": emp.Ownership
 })]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>

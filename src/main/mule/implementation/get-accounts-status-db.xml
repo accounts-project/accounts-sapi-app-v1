@@ -8,7 +8,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 	<flow name="get-accounts-status-dbFlow" doc:id="bd635ec0-d285-4add-a194-42d8b02a09aa" >
 		<logger level="INFO" doc:name="Logger" doc:id="818db87f-606d-4678-8875-42e5f20289b8" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "db fetch request",&#10;	"datetime": now()&#10;}]'/>
 		<db:select doc:name="Select" doc:id="4b115923-34b3-46b3-8e7e-a692b7263ae4" config-ref="Database_Config">
-			<db:sql ><![CDATA[select * from customer where LastModifiedDate <= now() and LastModifiedDate >= ":LastModifiedDate";]]></db:sql>
+			<db:sql ><![CDATA[select * from customer;]]></db:sql>
 			<db:input-parameters ><![CDATA[#[{
 	"LastModifiedDate": vars.requestquerParam.LastModifiedDate
 }]]]></db:input-parameters>
@@ -36,7 +36,7 @@ output application/json
 	"AccountNumber": emp.AccountNumber,
 	"Type": emp.Type,
 	"Industry": emp.Industry,
-	"AnnualRevenue": emp.AnnualRevenue as Number,
+	"AnnualRevenue": emp.AnnualRevenue,
 	"status": emp.status,
 	"BillingCity": emp.BillingCity,
 	"Rating": emp.Rating,
