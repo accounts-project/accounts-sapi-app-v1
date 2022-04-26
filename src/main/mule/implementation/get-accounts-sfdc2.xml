@@ -64,5 +64,10 @@ output application/json
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="4ae6b840-711b-4b70-b8d7-b23ac6f80f35" type="ANY">
+				<logger level="INFO" doc:name="Logger" doc:id="aca3d38d-c5ce-4cea-8439-506e49f1f0ff" />
+			</on-error-propagate>
+		</error-handler>
 	</flow>
 </mule>
