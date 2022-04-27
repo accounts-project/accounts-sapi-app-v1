@@ -3,18 +3,18 @@
     <flow name="accounts-sapi-app-v1-main">
         <http:listener config-ref="accounts-sapi-app-v1-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
-                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
             </http:response>
             <http:error-response statusCode="#[vars.httpStatus default 500]">
-                <http:body>#[payload]</http:body>
-                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+                <http:body><![CDATA[#[vars.customError]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
             </http:error-response>
         </http:listener>
-        <flow-ref doc:name="Flow Reference" doc:id="b17c9bd6-27b0-4584-ae3e-c138bce71339" name="common-initialize-variableSub_Flow"/>
+        <flow-ref doc:name="common-initialize-variableSub_Flow" doc:id="b17c9bd6-27b0-4584-ae3e-c138bce71339" name="common-initialize-variableSub_Flow"/>
 		<apikit:router config-ref="accounts-sapi-app-v1-config" />
 		<error-handler ref="global_Error_Handler_flow" />
     </flow>
-    <flow name="accounts-sapi-app-v1-console">
+    <!-- <flow name="accounts-sapi-app-v1-console">
         <http:listener config-ref="accounts-sapi-app-v1-httpListenerConfig" path="/console/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
                 <http:headers>#[vars.outboundHeaders default {}]</http:headers>
@@ -26,31 +26,35 @@
         </http:listener>
         <apikit:console config-ref="accounts-sapi-app-v1-config" />
 		<error-handler ref="global_Error_Handler_flow" />
-    </flow>
+    </flow> -->
     <flow name="patch:\accounts:application\json:accounts-sapi-app-v1-config">
-        <logger level="INFO" doc:name="Logger" doc:id="067842e9-e9b9-4c79-9509-b3864638909a" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "before flowreference",&#10;	"datetime": now()&#10;}]'/>
-		<flow-ref doc:name="Flow Reference" doc:id="32d37f22-da77-4f6f-8811-71a20a4444fa" name="patch-accounts-sfdc2Flow"/>
-		<logger level="INFO" doc:name="Logger" doc:id="e4c236b8-fb80-417e-bf6f-e5ce79ef44f1" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "after floe reference",&#10;	"datetime": now()&#10;}]'/>
+        <logger level="INFO" doc:name="startLogger" doc:id="067842e9-e9b9-4c79-9509-b3864638909a" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "before flowreference",&#10;	"datetime": now()&#10;}]'/>
+		<flow-ref doc:name="patch-accounts-sfdc2Flow" doc:id="32d37f22-da77-4f6f-8811-71a20a4444fa" name="patch-accounts-sfdc2Flow"/>
+		<logger level="INFO" doc:name="endLogger" doc:id="e4c236b8-fb80-417e-bf6f-e5ce79ef44f1" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "after floe reference",&#10;	"datetime": now()&#10;}]'/>
+		<error-handler ref="global_Error_Handler_flow"/>
     </flow>
     <flow name="get:\accounts:accounts-sapi-app-v1-config">
-        <logger level="INFO" doc:name="Logger" doc:id="c53382a3-a47d-4ea3-b0b1-7b3121df0dfe" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "before flowreference",&#10;	"datetime": now()&#10;}]'/>
-		<flow-ref doc:name="Flow Reference" doc:id="d714cfdd-822e-42b0-b706-666ad9bc0d36" name="get-accounts-sfdc-fetch--flow"/>
-		<logger level="INFO" doc:name="Logger" doc:id="da8cf3a5-a35b-4e51-99ce-8ef2d31b582e" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "after flowreference",&#10;	"datetime": now()&#10;}]'/>
+        <logger level="INFO" doc:name="startLog" doc:id="c53382a3-a47d-4ea3-b0b1-7b3121df0dfe" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "before flowreference",&#10;	"datetime": now()&#10;}]'/>
+		<flow-ref doc:name="get-accounts-sfdc-fetch--flow" doc:id="d714cfdd-822e-42b0-b706-666ad9bc0d36" name="get-accounts-sfdc-fetch--flow"/>
+		<logger level="INFO" doc:name="endLog" doc:id="da8cf3a5-a35b-4e51-99ce-8ef2d31b582e" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "after flowreference",&#10;	"datetime": now()&#10;}]'/>
+		<error-handler ref="global_Error_Handler_flow"/>
     </flow>
     <flow name="get:\accounts\status:accounts-sapi-app-v1-config">
-        <logger level="INFO" doc:name="Logger" doc:id="17c103aa-2526-4c5f-afca-cda9e116565b" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "before flow reference",&#10;	"datetime": now()&#10;}]'/>
-		<flow-ref doc:name="Flow Reference" doc:id="546cbb43-6f8d-4738-b54a-034886f1014a" name="get-accounts-status-dbFlow"/>
-		<logger level="INFO" doc:name="Logger" doc:id="19d5aac8-1999-46ef-9e27-f1fbf638ed51" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "after flow reference",&#10;	"datetime": now()&#10;}]'/>
+        <logger level="INFO" doc:name="startLog" doc:id="17c103aa-2526-4c5f-afca-cda9e116565b" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "before flow reference",&#10;	"datetime": now()&#10;}]'/>
+		<flow-ref doc:name="get-accounts-status-dbFlow" doc:id="546cbb43-6f8d-4738-b54a-034886f1014a" name="get-accounts-status-dbFlow"/>
+		<logger level="INFO" doc:name="endLog" doc:id="19d5aac8-1999-46ef-9e27-f1fbf638ed51" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "after flow reference",&#10;	"datetime": now()&#10;}]'/>
+		<error-handler ref="global_Error_Handler_flow"/>
     </flow>
     <flow name="post:\accounts:application\json:accounts-sapi-app-v1-config">
-        <logger level="DEBUG" doc:name="Logger" doc:id="fa9215c3-b0a7-470a-b92a-f2ed5c69a4d4" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "before flowreference",&#10;	"datetime": now()&#10;}]'/>
-		<flow-ref doc:name="Flow Reference" doc:id="759bddff-1032-466a-8ab1-911dc4449817" name="post-accounts-sfdcFlow"/>
-		<logger level="INFO" doc:name="Logger" doc:id="da3faf00-be02-45cb-bf48-86a6fdc165b1" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "after flowreference",&#10;	"datetime": now()&#10;}]'/>
+        <logger level="DEBUG" doc:name="startLog" doc:id="fa9215c3-b0a7-470a-b92a-f2ed5c69a4d4" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "before flowreference",&#10;	"datetime": now()&#10;}]'/>
+		<flow-ref doc:name="post-accounts-sfdcFlow" doc:id="759bddff-1032-466a-8ab1-911dc4449817" name="post-accounts-sfdcFlow"/>
+		<logger level="INFO" doc:name="endLog" doc:id="da3faf00-be02-45cb-bf48-86a6fdc165b1" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "after flowreference",&#10;	"datetime": now()&#10;}]'/>
+		<error-handler  ref="global_Error_Handler_flow"/>
     </flow>
     <flow name="post:\accounts\status:application\json:accounts-sapi-app-v1-config">
-        <logger level="INFO" doc:name="Logger" doc:id="f8276e1b-1d5a-42c0-b65f-5eb3675e0927" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "before flowreference",&#10;	"datetime": now()&#10;}]'/>
-		<flow-ref doc:name="Flow Reference" doc:id="8990eb49-60f0-4f8e-b23b-3b88a89292d9" name="post-accounts-status-dbFlow"/>
-		<logger level="INFO" doc:name="Logger" doc:id="3804b104-cd2e-4f50-9f57-a0889c252191" message='#[%dw 2.0
+        <logger level="INFO" doc:name="startLog" doc:id="f8276e1b-1d5a-42c0-b65f-5eb3675e0927" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "before flowreference",&#10;	"datetime": now()&#10;}]'/>
+		<flow-ref doc:name="post-accounts-status-dbFlow" doc:id="8990eb49-60f0-4f8e-b23b-3b88a89292d9" name="post-accounts-status-dbFlow"/>
+		<logger level="INFO" doc:name="endLog" doc:id="3804b104-cd2e-4f50-9f57-a0889c252191" message='#[%dw 2.0
 output application/json
 ---
 {
@@ -60,5 +64,6 @@ output application/json
 	"status": "after flowreference",
 	"datetime": now()
 }]'/>
+		<error-handler ref="global_Error_Handler_flow"/>
     </flow>
 </mule>

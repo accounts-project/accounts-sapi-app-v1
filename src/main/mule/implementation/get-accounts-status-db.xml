@@ -6,14 +6,14 @@
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<flow name="get-accounts-status-dbFlow" doc:id="bd635ec0-d285-4add-a194-42d8b02a09aa" >
-		<logger level="INFO" doc:name="Logger" doc:id="818db87f-606d-4678-8875-42e5f20289b8" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "db fetch request",&#10;	"datetime": now()&#10;}]'/>
-		<db:select doc:name="Select" doc:id="4b115923-34b3-46b3-8e7e-a692b7263ae4" config-ref="Database_Config">
+		<logger level="INFO" doc:name="dbrequestLog" doc:id="818db87f-606d-4678-8875-42e5f20289b8" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "db fetch request",&#10;	"datetime": now()&#10;}]'/>
+		<db:select doc:name="Select customer" doc:id="4b115923-34b3-46b3-8e7e-a692b7263ae4" config-ref="Database_Config">
 			<db:sql ><![CDATA[select * from customer;]]></db:sql>
 			<db:input-parameters ><![CDATA[#[{
 	"LastModifiedDate": vars.requestquerParam.LastModifiedDate
 }]]]></db:input-parameters>
 		</db:select>
-		<logger level="INFO" doc:name="Logger" doc:id="c8a412f2-1c48-4e3f-8318-f20e4d6758b4" message='#[%dw 2.0
+		<logger level="INFO" doc:name="dbresponceLog" doc:id="c8a412f2-1c48-4e3f-8318-f20e4d6758b4" message='#[%dw 2.0
 output application/json
 ---
 {
@@ -24,7 +24,7 @@ output application/json
 	"status": "db fetch responce",
 	"datetime": now()
 }]'/>
-		<ee:transform doc:name="Transform Message" doc:id="a43e271e-79eb-4eca-a10e-f5d8204a93b2" >
+		<ee:transform doc:name="mapping" doc:id="a43e271e-79eb-4eca-a10e-f5d8204a93b2" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -48,8 +48,23 @@ output application/json
 			</ee:message>
 		</ee:transform>
 		<error-handler >
-			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="a031cac5-673a-42c6-ae76-8b9df2600abd" type="DB:BAD_SQL_SYNTAX, DB:CONNECTIVITY, DB:QUERY_EXECUTION">
-				<logger level="INFO" doc:name="Logger" doc:id="cc9f3b1c-f268-47d1-93c3-005bfafc0d4c" message="DB Error"/>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="a031cac5-673a-42c6-ae76-8b9df2600abd" type="DB:BAD_SQL_SYNTAX, DB:CONNECTIVITY, DB:QUERY_EXECUTION, EXPRESSION">
+				<ee:transform doc:name="errorPayload" doc:id="ffb49681-14cb-4237-b790-d2f9152dbd17" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{ 
+	"msg"		: error.description,
+	"error"		: {
+		"type"	: error.errorType.asString,
+		"title"	: error.errorType.identifier,
+		"details" : error.detailedDescription
+  }
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<logger level="INFO" doc:name="logPayload" doc:id="cc9f3b1c-f268-47d1-93c3-005bfafc0d4c" message="#[payload]"/>
 			</on-error-propagate>
 		</error-handler>
 	</flow>

@@ -26,6 +26,7 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 	<db:config name="Database_Config" doc:name="Database Config" doc:id="78c801d3-bd8e-4996-a613-6882d12c3f3b" >
 		<db:my-sql-connection host="${db.host}" port="${db.port}" user="${db.user}" password="${db.password}" database="${db.database}" />
 	</db:config>
+	<configuration doc:name="Configuration" doc:id="6f905640-d3c9-49d9-aa64-32074aa89a62" defaultErrorHandler-ref="global_Error_Handler_flow" />
    
 	
 </mule>

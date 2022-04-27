@@ -6,7 +6,7 @@
 http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<flow name="get-accounts-sfdc-fetch--flow" doc:id="3f6e8768-2240-4015-a31d-7e7e2b906da0" >
-		<ee:transform doc:name="Transform Message" doc:id="6abd700a-94c0-4547-9115-f7c094813c08" >
+		<ee:transform doc:name="selectOperation" doc:id="6abd700a-94c0-4547-9115-f7c094813c08" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -41,7 +41,7 @@ output application/json
 	"status": "sfdc query responce",
 	"datetime": now()
 }]'/>
-		<ee:transform doc:name="Transform Message" doc:id="1942bd69-6596-4e69-8222-88ee3ba78ed9" >
+		<ee:transform doc:name="mapping" doc:id="1942bd69-6596-4e69-8222-88ee3ba78ed9" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -65,8 +65,23 @@ output application/json
 			</ee:message>
 		</ee:transform>
 		<error-handler >
-			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="4ae6b840-711b-4b70-b8d7-b23ac6f80f35" type="ANY">
-				<logger level="INFO" doc:name="Logger" doc:id="aca3d38d-c5ce-4cea-8439-506e49f1f0ff" message="SFDC Error in SAPI"/>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="00777b57-6f55-4a30-ab94-ca515e3a06eb" type="SALESFORCE:CONNECTIVITY, SALESFORCE:INVALID_INPUT, SALESFORCE:INVALID_RESPONSE, SALESFORCE:LIMIT_EXCEEDED, SALESFORCE:NOT_FOUND, SALESFORCE:TIMEOUT">
+				<ee:transform doc:name="errorPayload" doc:id="30070999-3c80-4473-9623-b695cdb2646f" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{ 
+	"msg"		: error.description,
+	"error"		: {
+		"type"	: error.errorType.asString,
+		"title"	: error.errorType.identifier,
+		"details" : error.detailedDescription
+  }
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<logger level="INFO" doc:name="logmessage" doc:id="08173d8e-697d-422d-920e-7e0a37212427" />
 			</on-error-propagate>
 		</error-handler>
 	</flow>

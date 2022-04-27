@@ -6,8 +6,8 @@
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
 	<flow name="post-accounts-status-dbFlow" doc:id="6feaa0c7-d4bd-448f-bcb9-8bd36864236d" >
-		<logger level="INFO" doc:name="Logger" doc:id="1028ec61-91d3-4106-8fa1-8121d379bd72" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "db request",&#10;	"datetime": now()&#10;}]'/>
-		<ee:transform doc:name="Transform Message" doc:id="b7b71f0f-aed1-4b81-9946-73add365a7c5" >
+		<logger level="INFO" doc:name="dbrequestLog" doc:id="1028ec61-91d3-4106-8fa1-8121d379bd72" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "db request",&#10;	"datetime": now()&#10;}]'/>
+		<ee:transform doc:name="mapping" doc:id="b7b71f0f-aed1-4b81-9946-73add365a7c5" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -29,7 +29,7 @@ output application/json
 		<db:bulk-insert doc:name="Bulk insert" doc:id="0c275b37-11e7-4836-babb-4263465fe570" config-ref="Database_Config">
 			<db:sql ><![CDATA[insert into customer (accountName,accountNumber,Type,Industry,AnnualRevenue,phoneNumber,BillingCity,Rating,status,ownership)values(:accountName,:accountNumber,:Type,:Industry,:AnnualRevenue,:phoneNumber,:BillingCity,:Rating,:status,:ownership)]]></db:sql>
 		</db:bulk-insert>
-		<logger level="INFO" doc:name="Logger" doc:id="298c547a-6495-4c77-94df-02c058271af3" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "db responce",&#10;	"datetime": now()&#10;}]'/>
+		<logger level="INFO" doc:name="dbresponcelog" doc:id="298c547a-6495-4c77-94df-02c058271af3" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "db responce",&#10;	"datetime": now()&#10;}]'/>
 		<ee:transform doc:name="Transform Message" doc:id="9d154b25-47fe-4b2b-8eea-5afb3b288737" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
@@ -44,9 +44,24 @@ output application/json
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<error-handler >
-			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="2f2ee0e9-62cf-4e8e-a1a2-5d16f59a3750" type="DB:BAD_SQL_SYNTAX, DB:CONNECTIVITY, DB:QUERY_EXECUTION, DB:RETRY_EXHAUSTED">
-				<logger level="INFO" doc:name="Logger" doc:id="0081d2f9-4d37-4231-be6e-5df26414ada0" message="DB Error"/>
+		<error-handler>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="" doc:id="9d7dae64-b4e1-4d6c-b2db-062e326dcb5d" type="DB:BAD_SQL_SYNTAX, DB:CONNECTIVITY, DB:QUERY_EXECUTION, DB:RETRY_EXHAUSTED">
+				<ee:transform doc:name="errorPayload" doc:id="09db39ba-c130-4f8e-bf99-ecfc3327ffa3" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{ 
+	"msg"		: error.description,
+	"error"		: {
+		"type"	: error.errorType.asString,
+		"title"	: error.errorType.identifier,
+		"details" : error.detailedDescription
+   }
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<logger level="INFO" doc:name="logPayload" doc:id="fdcdf005-2e26-4827-959b-f777334d17f4" message="#[payload]"/>
 			</on-error-propagate>
 		</error-handler>
 	</flow>
