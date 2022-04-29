@@ -10,8 +10,25 @@
                 <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
             </http:error-response>
         </http:listener>
-        <flow-ref doc:name="common-initialize-variableSub_Flow" doc:id="b17c9bd6-27b0-4584-ae3e-c138bce71339" name="common-initialize-variableSub_Flow"/>
-		<apikit:router config-ref="accounts-sapi-app-v1-config" />
+		<ee:transform doc:name="variables" doc:id="6b19564c-86f0-4f80-a81f-0197ac82038d" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="requesttime" ><![CDATA[now()]]></ee:set-variable>
+				<ee:set-variable variableName="requestqueryParam" ><![CDATA[attributes.queryParams]]></ee:set-variable>
+				<ee:set-variable variableName="requesturiParam" ><![CDATA[attributes.uriParams]]></ee:set-variable>
+				<ee:set-variable variableName="requestHeader" ><![CDATA[attributes.headers
+
+]]></ee:set-variable>
+				<ee:set-variable variableName="requestPayload" ><![CDATA[%dw 2.0
+output application/json
+---
+payload
+]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		
+		<apikit:router config-ref="accounts-sapi-app-v1-config" doc:id="745f99bc-ef6c-44cb-9986-be0fadbcb3bd"/>
 		<error-handler ref="global_Error_Handler_flow" />
     </flow>
     <!-- <flow name="accounts-sapi-app-v1-console">

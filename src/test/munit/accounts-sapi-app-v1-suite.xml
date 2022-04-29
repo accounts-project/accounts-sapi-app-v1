@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="accounts-sapi-app-v1-suite.xml" />
+	<munit:test name="accounts-sapi-app-v1-main-test" doc:id="0fbc244d-273d-438a-ae46-22e39589f4bd" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock APIkit Router" doc:id="5d1226ce-48d5-4ab8-b757-096c7d7eb581" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="745f99bc-ef6c-44cb-9986-be0fadbcb3bd" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://accountssapiappv1maintest\mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="requesttime" value="#[output application/java --- readUrl('classpath://accountssapiappv1maintest\mock_variable_.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://accountssapiappv1maintest\mock_variable_1.dwl')]" />
+						<munit-tools:variable key="httpStatus" value="#[readUrl('classpath://accountssapiappv1maintest\mock_variable_2.dwl')]" />
+						<munit-tools:variable key="requestqueryParam" value="#[output application/java --- readUrl('classpath://accountssapiappv1maintest\mock_variable_3.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="requesturiParam" value="#[output application/java --- readUrl('classpath://accountssapiappv1maintest\mock_variable_4.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="requestPayload" value="#[output application/json --- readUrl('classpath://accountssapiappv1maintest\mock_variable_5.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="requestHeader" value="#[output application/java --- readUrl('classpath://accountssapiappv1maintest\mock_variable_6.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="d923e81e-8a72-4619-8fa7-fe1ffe078a9c" >
+				<munit:payload value="#[readUrl('classpath://accountssapiappv1maintest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://accountssapiappv1maintest\set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to accounts-sapi-app-v1-main" doc:id="00dd95cc-df7a-4a87-861a-2df688055d93" name="accounts-sapi-app-v1-main"/>
+		</munit:execution>
+	</munit:test>
+	<munit:test name="get:\accounts:accounts-sapi-app-v1-config-test" doc:id="9f1f3769-1db7-439a-bc58-856642c84cdd" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock get-accounts-sfdc-fetch--flow" doc:id="d6f64727-ff4f-483d-87ae-723e7320692a" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="d714cfdd-822e-42b0-b706-666ad9bc0d36" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://getaccountsaccountssapiappv1configtest\mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="requesttime" value="#[output application/java --- readUrl('classpath://getaccountsaccountssapiappv1configtest\mock_variable_.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://getaccountsaccountssapiappv1configtest\mock_variable_1.dwl')]" />
+						<munit-tools:variable key="requestqueryParam" value="#[output application/java --- readUrl('classpath://getaccountsaccountssapiappv1configtest\mock_variable_2.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="requesturiParam" value="#[output application/java --- readUrl('classpath://getaccountsaccountssapiappv1configtest\mock_variable_3.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="requestPayload" value="#[output application/json --- readUrl('classpath://getaccountsaccountssapiappv1configtest\mock_variable_4.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="requestHeader" value="#[output application/java --- readUrl('classpath://getaccountsaccountssapiappv1configtest\mock_variable_5.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="3732dd22-c135-4072-954d-4c2689113ca8" >
+				<munit:payload value="#[readUrl('classpath://getaccountsaccountssapiappv1configtest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://getaccountsaccountssapiappv1configtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="requesttime" value="#[output application/java --- readUrl('classpath://getaccountsaccountssapiappv1configtest\set-event_variable_.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getaccountsaccountssapiappv1configtest\set-event_variable_1.dwl')]" />
+					<munit:variable key="requestqueryParam" value="#[output application/java --- readUrl('classpath://getaccountsaccountssapiappv1configtest\set-event_variable_2.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					<munit:variable key="requesturiParam" value="#[output application/java --- readUrl('classpath://getaccountsaccountssapiappv1configtest\set-event_variable_3.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					<munit:variable key="requestPayload" value="#[output application/json --- readUrl('classpath://getaccountsaccountssapiappv1configtest\set-event_variable_4.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variable key="requestHeader" value="#[output application/java --- readUrl('classpath://getaccountsaccountssapiappv1configtest\set-event_variable_5.dwl')]" encoding="UTF-8" mediaType="application/java" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\accounts:accounts-sapi-app-v1-config" doc:id="3e96ba77-f7da-4f6c-bd03-6b80266d595e" name="get:\accounts:accounts-sapi-app-v1-config"/>
+		</munit:execution>
+	</munit:test>
+	<munit:test name="get:\accounts\status:accounts-sapi-app-v1-config-test" doc:id="e7a000ee-0f0d-44bd-a332-d41f11752496" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock get-accounts-status-dbFlow" doc:id="deec53b0-ba35-49bf-8cad-1b3bcf188423" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="546cbb43-6f8d-4738-b54a-034886f1014a" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://getaccountsstatusaccountssapiappv1configtest\mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="requesttime" value="#[output application/java --- readUrl('classpath://getaccountsstatusaccountssapiappv1configtest\mock_variable_.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://getaccountsstatusaccountssapiappv1configtest\mock_variable_1.dwl')]" />
+						<munit-tools:variable key="requestqueryParam" value="#[output application/java --- readUrl('classpath://getaccountsstatusaccountssapiappv1configtest\mock_variable_2.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="requesturiParam" value="#[output application/java --- readUrl('classpath://getaccountsstatusaccountssapiappv1configtest\mock_variable_3.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="requestPayload" value="#[output application/json --- readUrl('classpath://getaccountsstatusaccountssapiappv1configtest\mock_variable_4.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="requestHeader" value="#[output application/java --- readUrl('classpath://getaccountsstatusaccountssapiappv1configtest\mock_variable_5.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="43c105c7-1a9c-4162-a81f-b3a6af386980" >
+				<munit:payload value="#[readUrl('classpath://getaccountsstatusaccountssapiappv1configtest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://getaccountsstatusaccountssapiappv1configtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="requesttime" value="#[output application/java --- readUrl('classpath://getaccountsstatusaccountssapiappv1configtest\set-event_variable_.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getaccountsstatusaccountssapiappv1configtest\set-event_variable_1.dwl')]" />
+					<munit:variable key="requestqueryParam" value="#[output application/java --- readUrl('classpath://getaccountsstatusaccountssapiappv1configtest\set-event_variable_2.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					<munit:variable key="requesturiParam" value="#[output application/java --- readUrl('classpath://getaccountsstatusaccountssapiappv1configtest\set-event_variable_3.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					<munit:variable key="requestPayload" value="#[output application/json --- readUrl('classpath://getaccountsstatusaccountssapiappv1configtest\set-event_variable_4.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variable key="requestHeader" value="#[output application/java --- readUrl('classpath://getaccountsstatusaccountssapiappv1configtest\set-event_variable_5.dwl')]" encoding="UTF-8" mediaType="application/java" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\accounts\status:accounts-sapi-app-v1-config" doc:id="f34a0aef-025c-48d3-8705-0c3234530cfd" name="get:\accounts\status:accounts-sapi-app-v1-config"/>
+		</munit:execution>
+	</munit:test>
+	<munit:test name="post:\accounts:application\json:accounts-sapi-app-v1-config-test" doc:id="ecfa8c1c-b045-444d-bcc5-81bef1247653" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock post-accounts-sfdcFlow" doc:id="dc8c8ed6-f093-4372-952f-b01fab18deaf" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="759bddff-1032-466a-8ab1-911dc4449817" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://postaccountsapplicationjsonaccountssapiappv1configtest\mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="requesttime" value="#[output application/java --- readUrl('classpath://postaccountsapplicationjsonaccountssapiappv1configtest\mock_variable_.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postaccountsapplicationjsonaccountssapiappv1configtest\mock_variable_1.dwl')]" />
+						<munit-tools:variable key="requestqueryParam" value="#[output application/java --- readUrl('classpath://postaccountsapplicationjsonaccountssapiappv1configtest\mock_variable_2.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="requesturiParam" value="#[output application/java --- readUrl('classpath://postaccountsapplicationjsonaccountssapiappv1configtest\mock_variable_3.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="requestPayload" value="#[output application/json --- readUrl('classpath://postaccountsapplicationjsonaccountssapiappv1configtest\mock_variable_4.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="requestHeader" value="#[output application/java --- readUrl('classpath://postaccountsapplicationjsonaccountssapiappv1configtest\mock_variable_5.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="021c2fcc-6c74-46c5-9a8c-860d2abde4dc" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://postaccountsapplicationjsonaccountssapiappv1configtest\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://postaccountsapplicationjsonaccountssapiappv1configtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="requesttime" value="#[output application/java --- readUrl('classpath://postaccountsapplicationjsonaccountssapiappv1configtest\set-event_variable_.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://postaccountsapplicationjsonaccountssapiappv1configtest\set-event_variable_1.dwl')]" />
+					<munit:variable key="requestqueryParam" value="#[output application/java --- readUrl('classpath://postaccountsapplicationjsonaccountssapiappv1configtest\set-event_variable_2.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					<munit:variable key="requesturiParam" value="#[output application/java --- readUrl('classpath://postaccountsapplicationjsonaccountssapiappv1configtest\set-event_variable_3.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					<munit:variable key="requestPayload" value="#[output application/json --- readUrl('classpath://postaccountsapplicationjsonaccountssapiappv1configtest\set-event_variable_4.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variable key="requestHeader" value="#[output application/java --- readUrl('classpath://postaccountsapplicationjsonaccountssapiappv1configtest\set-event_variable_5.dwl')]" encoding="UTF-8" mediaType="application/java" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to post:\accounts:application\json:accounts-sapi-app-v1-config" doc:id="c72fec1a-d162-4cbf-ac75-e0705035a548" name="post:\accounts:application\json:accounts-sapi-app-v1-config"/>
+		</munit:execution>
+	</munit:test>
+	<munit:test name="patch:\accounts:application\json:accounts-sapi-app-v1-config-test" doc:id="3fcddab5-d792-42ba-8715-10eba8f5f036" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock patch-accounts-sfdc2Flow" doc:id="8aa420d3-c88d-4010-ab68-238fccd95350" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="32d37f22-da77-4f6f-8811-71a20a4444fa" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://patchaccountsapplicationjsonaccountssapiappv1configtest\mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="requesttime" value="#[output application/java --- readUrl('classpath://patchaccountsapplicationjsonaccountssapiappv1configtest\mock_variable_.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://patchaccountsapplicationjsonaccountssapiappv1configtest\mock_variable_1.dwl')]" />
+						<munit-tools:variable key="requestqueryParam" value="#[output application/java --- readUrl('classpath://patchaccountsapplicationjsonaccountssapiappv1configtest\mock_variable_2.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="requesturiParam" value="#[output application/java --- readUrl('classpath://patchaccountsapplicationjsonaccountssapiappv1configtest\mock_variable_3.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="requestPayload" value="#[output application/json --- readUrl('classpath://patchaccountsapplicationjsonaccountssapiappv1configtest\mock_variable_4.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="requestHeader" value="#[output application/java --- readUrl('classpath://patchaccountsapplicationjsonaccountssapiappv1configtest\mock_variable_5.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="6e5607f1-2adc-4701-9f17-dbb166c8f580" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://patchaccountsapplicationjsonaccountssapiappv1configtest\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://patchaccountsapplicationjsonaccountssapiappv1configtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="requesttime" value="#[output application/java --- readUrl('classpath://patchaccountsapplicationjsonaccountssapiappv1configtest\set-event_variable_.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://patchaccountsapplicationjsonaccountssapiappv1configtest\set-event_variable_1.dwl')]" />
+					<munit:variable key="requestqueryParam" value="#[output application/java --- readUrl('classpath://patchaccountsapplicationjsonaccountssapiappv1configtest\set-event_variable_2.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					<munit:variable key="requesturiParam" value="#[output application/java --- readUrl('classpath://patchaccountsapplicationjsonaccountssapiappv1configtest\set-event_variable_3.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					<munit:variable key="requestPayload" value="#[output application/json --- readUrl('classpath://patchaccountsapplicationjsonaccountssapiappv1configtest\set-event_variable_4.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variable key="requestHeader" value="#[output application/java --- readUrl('classpath://patchaccountsapplicationjsonaccountssapiappv1configtest\set-event_variable_5.dwl')]" encoding="UTF-8" mediaType="application/java" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to patch:\accounts:application\json:accounts-sapi-app-v1-config" doc:id="9a36b566-4b8a-4dff-b79d-6950df6f4d51" name="patch:\accounts:application\json:accounts-sapi-app-v1-config"/>
+		</munit:execution>
+	</munit:test>
+
+
+</mule>

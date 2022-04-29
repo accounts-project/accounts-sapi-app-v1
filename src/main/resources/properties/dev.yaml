@@ -1,0 +1,13 @@
+http:
+ host: "0.0.0.0"
+ port: "8081"
+
+sfdc:
+  user: "lakkyreddyvamsi@gmail.com"
+  
+db:
+ host: "baeqgisybtiew6pvco5j-mysql.services.clever-cloud.com"
+ port: "3306"
+ user: "uwbjggsp0b2qhssq"
+ password: "u6Mqgs5AVDhadqcEcO46"
+ database: "baeqgisybtiew6pvco5j"

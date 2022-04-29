@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:batch="http://www.mulesoft.org/schema/mule/batch" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd">
+	<flow name="patch-accounts-sfdc2Flow" doc:id="9f8e594e-329b-4303-8b84-66a005bdafe9" >
+		<logger level="INFO" doc:name="sfdcrequestLog" doc:id="172d0639-4cff-400c-849d-7e3f66de6322" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "sfdc update request",&#10;	"datetime": now()&#10;}]'/>
+		<ee:transform doc:name="mapping" doc:id="33b9352b-9cef-4c76-abea-c363fbb6b01c" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+vars.requestPayload.accountRequest map((emp,index)->{
+	"Name":emp.Name,
+	"accountName__c": emp.Name,
+	"AccountNumber": emp.AccountNumber,
+	"Type": emp.Type,
+	"Industry": emp.Industry,
+	"AnnualRevenue": emp.AnnualRevenue,
+	"status__c": if(emp.status == 'false')'true'else"none",
+	"BillingCity": emp.BillingCity,
+	"Rating": emp.Rating,
+	"phoneNumber__c": emp.phone,
+	"Ownership": emp.Ownership
+})]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<salesforce:upsert objectType="Account" externalIdFieldName="accountName__c" doc:name="update status to true" doc:id="7b711977-d085-42f1-a3aa-94ff7966221d" config-ref="Salesforce_Config" />
+		<logger level="INFO" doc:name="sfdcresponceLog" doc:id="c0f70576-92cc-4b68-a2b6-c315a576f065" message='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"flowname": flow.name,&#10;	"appname": app.name,&#10;	"transactionid": vars.requestHeader.transactionId,&#10;	"status": "sfdc update responce",&#10;	"datetime": now()&#10;}]'/>
+		<ee:transform doc:name="Transform Message" doc:id="1094c1b8-b80e-4e5d-9319-ec876a9e63af" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  accountResponse: vars.requestPayload.accountRequest map((emp,index)->
+    {
+      AccountNumber: vars.requestPayload.accountRequest.AccountNumber[index],
+      status: "true"
+    })
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<error-handler ref="global_Error_Handler_flow" />
+	</flow>
+</mule>

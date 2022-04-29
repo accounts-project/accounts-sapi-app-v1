@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="post-accounts-details-sfdc-suite.xml" />
+	<munit:test name="post-accounts-sfdcFlow-test" doc:id="926ae291-d834-4d88-bb24-1befd189559e" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock insert new fields" doc:id="d828d463-3c77-4e55-be16-c575b9190393" processor="salesforce:upsert">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="4eeca8f2-9c94-405b-9872-80f67ef97a11" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://postaccountssfdcFlowtest\mock_payload.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="requesttime" value="#[output application/java --- readUrl('classpath://postaccountssfdcFlowtest\mock_variable_.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postaccountssfdcFlowtest\mock_variable_1.dwl')]" />
+						<munit-tools:variable key="requestqueryParam" value="#[output application/java --- readUrl('classpath://postaccountssfdcFlowtest\mock_variable_2.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="requesturiParam" value="#[output application/java --- readUrl('classpath://postaccountssfdcFlowtest\mock_variable_3.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="requestPayload" value="#[output application/json --- readUrl('classpath://postaccountssfdcFlowtest\mock_variable_4.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="requestHeader" value="#[output application/java --- readUrl('classpath://postaccountssfdcFlowtest\mock_variable_5.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="b7e24569-86c6-41ed-9ac9-241f7a350c59" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://postaccountssfdcFlowtest\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://postaccountssfdcFlowtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="requesttime" value="#[output application/java --- readUrl('classpath://postaccountssfdcFlowtest\set-event_variable_.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://postaccountssfdcFlowtest\set-event_variable_1.dwl')]" />
+					<munit:variable key="requestqueryParam" value="#[output application/java --- readUrl('classpath://postaccountssfdcFlowtest\set-event_variable_2.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					<munit:variable key="requesturiParam" value="#[output application/java --- readUrl('classpath://postaccountssfdcFlowtest\set-event_variable_3.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					<munit:variable key="requestPayload" value="#[output application/json --- readUrl('classpath://postaccountssfdcFlowtest\set-event_variable_4.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variable key="requestHeader" value="#[output application/java --- readUrl('classpath://postaccountssfdcFlowtest\set-event_variable_5.dwl')]" encoding="UTF-8" mediaType="application/java" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to post-accounts-sfdcFlow" doc:id="a77c1e25-5259-418a-aca2-4b0a4d3d55e5" name="post-accounts-sfdcFlow"/>
+		</munit:execution>
+	</munit:test>
+
+
+</mule>

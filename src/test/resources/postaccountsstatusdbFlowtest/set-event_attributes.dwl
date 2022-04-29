@@ -1,0 +1,31 @@
+{
+  "headers": {
+    "transactionid": "nbjfho84tuyy96",
+    "clientid": "878898798hgu7868yyh",
+    "clientsecret": "9yujfyurybjsddiu9394jj",
+    "content-type": "application/json",
+    "user-agent": "PostmanRuntime/7.26.10",
+    "accept": "*/*",
+    "postman-token": "acbe8113-54d3-48ec-a30b-5006bc5309ab",
+    "host": "0.0.0.0:8081",
+    "accept-encoding": "gzip, deflate, br",
+    "connection": "keep-alive",
+    "content-length": "790"
+  },
+  "clientCertificate": null,
+  "method": "POST",
+  "scheme": "http",
+  "queryParams": {},
+  "requestUri": "/api/accounts/status",
+  "queryString": "",
+  "version": "HTTP/1.1",
+  "maskedRequestPath": "/accounts/status",
+  "listenerPath": "/api/*",
+  "relativePath": "/api/accounts/status",
+  "localAddress": "/127.0.0.1:8081",
+  "uriParams": {},
+  "rawRequestUri": "/api/accounts/status",
+  "rawRequestPath": "/api/accounts/status",
+  "remoteAddress": "/127.0.0.1:64517",
+  "requestPath": "/api/accounts/status"
+}
